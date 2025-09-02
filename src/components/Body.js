@@ -15,15 +15,17 @@ const Body = () => {
 
   const fetchData = async () => {
     const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=13.0330385&lng=80.20528949999999&collection=83639&tags=layout_CCS_Biryani&sortBy=&filters=&type=rcv2&offset=0&page_type=null"
+      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=13.0459057&lng=80.2255088&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
     );
 
     const json = await data.json();
 
-    const restaurantCards = json?.data?.cards?.slice(3) || [];
-
-    setListOfRestaurant(restaurantCards);
-    setFilteredRestaurant(restaurantCards);
+    setListOfRestaurant(
+      json?.data?.cards[4].card.card.gridElements.infoWithStyle.restaurants
+    );
+    setFilteredRestaurant(
+      json?.data?.cards[4].card.card.gridElements.infoWithStyle.restaurants
+    );
   };
 
   return listOfRestaurant.length === 0 ? (
@@ -42,9 +44,7 @@ const Body = () => {
             onClick={() => {
               console.log(searchText);
               const filteredRestaurant = listOfRestaurant.filter((res) =>
-                res.card.card.info.name
-                  .toLowerCase()
-                  .includes(searchText.toLowerCase())
+                res?.info?.name.toLowerCase().includes(searchText.toLowerCase())
               );
               setFilteredRestaurant(filteredRestaurant);
             }}
@@ -56,9 +56,9 @@ const Body = () => {
           className="filter-btn"
           onClick={() => {
             const filteredRestaurant = listOfRestaurant.filter(
-              (res) => res.card.card.info.avgRating >= 4.5
+              (res) => res?.info?.avgRating >= 4.5
             );
-            setListOfRestaurant(filteredRestaurant);
+            setFilteredRestaurant(filteredRestaurant);
           }}
         >
           Top Rated Restaurants
@@ -66,10 +66,7 @@ const Body = () => {
       </div>
       <div className="res-container">
         {filteredRestaurant.map((restaurant) => (
-          <RestaurantCard
-            key={restaurant?.card?.card?.info?.id}
-            resData={restaurant}
-          />
+          <RestaurantCard key={restaurant?.info?.id} resData={restaurant} />
         ))}
       </div>
     </div>
