@@ -20,11 +20,12 @@
   "devDependencies": {
     "parcel": "^2.15.4"
   },
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  },
   "browserslist": [
     "last 2 versions"
-  ]
+  ],
+  "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^6.30.1"
+  }
 }
